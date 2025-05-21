@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ProjectB.Model;
 using ProjectB.Repository;
+using ProjectB.Services;
 
 namespace ProjectA.Controllers
 {
@@ -9,11 +10,13 @@ namespace ProjectA.Controllers
     [ApiController]
     public class Api : ControllerBase
     {
+
+        private MessageService _messageService;
         private ICustomerRepository _customerRepository;
-        public Api(ICustomerRepository customerRepository)
+        public Api(ICustomerRepository customerRepository, MessageService messageService)
         {
-            
-            _customerRepository = customerRepository;   
+            _customerRepository = customerRepository;
+            _messageService = messageService;   
         }
 
         [HttpGet("endpoint1")]
@@ -23,10 +26,11 @@ namespace ProjectA.Controllers
         }
 
 
-        [HttpGet("endpoint2")]
-        public IActionResult Endpoint2()
+        [HttpGet("messaging")]
+        public IActionResult Endpoint2(string msg)
         {
-            return Ok("ProjectB_Endpoint2");
+            _messageService.SendMessage(msg);
+            return Ok("Messaging successiful");
         }
 
 

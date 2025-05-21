@@ -1,5 +1,6 @@
 using ProjectB.Data;
 using ProjectB.Repository;
+using ProjectB.Services;
 
 namespace ProjectB
 {
@@ -18,14 +19,15 @@ namespace ProjectB
 
             //Service Defaults registered
             builder.AddServiceDefaults();
-
+            //Add RabbitMq
+            builder.AddRabbitMQClient("messaging");
 
             //MySQL Client
             builder.AddMySqlDbContext<MySqlDBContext>("ProjectBDb"); // Name should be same as AppHost
 
             // Register CustomerRepository for DI
             builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
-
+            builder.Services.AddScoped<MessageService>();
 
             var app = builder.Build();
 

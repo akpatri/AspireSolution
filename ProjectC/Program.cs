@@ -1,3 +1,4 @@
+using ProjectC.Services;
 
 namespace ProjectC
 {
@@ -8,11 +9,17 @@ namespace ProjectC
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+            // Register RabbitMQ client for DI (name must match AppHost)
+            builder.AddRabbitMQClient("messaging");
+
+            // Register WorkerService as a hosted service
+            builder.Services.AddHostedService<WorkerService>();
+
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
             builder.AddServiceDefaults();
 
             var app = builder.Build();
@@ -27,7 +34,6 @@ namespace ProjectC
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
             app.MapDefaultEndpoints();
