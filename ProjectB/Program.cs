@@ -13,6 +13,8 @@ namespace ProjectB
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.AddServiceDefaults();
+
 
             var app = builder.Build();
 
@@ -27,6 +29,8 @@ namespace ProjectB
 
             app.UseAuthorization();
 
+
+            app.MapDefaultEndpoints();
 
             app.MapControllers();
 
