@@ -25,6 +25,7 @@ namespace ProjectA.Controllers
 
 
         [HttpGet("endpoint2")]
+        [OutputCache(Duration = 30)]
         public IActionResult Enpoint2()
         {
             return Ok("ProjectA_Endpoint2");

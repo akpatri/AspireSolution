@@ -1,3 +1,5 @@
+using ProjectB.Data;
+using ProjectB.Repository;
 
 namespace ProjectB
 {
@@ -13,7 +15,16 @@ namespace ProjectB
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            //Service Defaults registered
             builder.AddServiceDefaults();
+
+
+            //MySQL Client
+            builder.AddMySqlDbContext<MySqlDBContext>("ProjectBDb"); // Name should be same as AppHost
+
+            // Register CustomerRepository for DI
+            builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 
 
             var app = builder.Build();
