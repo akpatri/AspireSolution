@@ -10,9 +10,21 @@ namespace ProjectA
             // Add services to the container.
 
             builder.Services.AddControllers();
+
+            //Redis Client
+            builder.AddRedisClient("cache"); // Name should be same as AppHost
+            //Output redis cache
+            builder.AddRedisOutputCache("cache");
+
+
+
+
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            //Service Defaults
             builder.AddServiceDefaults();
 
             var app = builder.Build();
@@ -28,7 +40,7 @@ namespace ProjectA
 
             app.UseAuthorization();
 
-
+            app.UseOutputCache();
             app.MapControllers();
             app.MapDefaultEndpoints();
             app.Run();
