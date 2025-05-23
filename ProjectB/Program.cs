@@ -17,6 +17,8 @@ namespace ProjectB
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddScoped<GrpcClient>();
+
             //Service Defaults registered
             builder.AddServiceDefaults();
             //Add RabbitMq

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ProjectB.Model;
 using ProjectB.Repository;
 using ProjectB.Services;
-
+using GrpcService;
 namespace ProjectA.Controllers
 {
     [Route("api")]
@@ -13,16 +13,19 @@ namespace ProjectA.Controllers
 
         private MessageService _messageService;
         private ICustomerRepository _customerRepository;
-        public Api(ICustomerRepository customerRepository, MessageService messageService)
+        private readonly GrpcClient _grpcClient;
+        public Api(ICustomerRepository customerRepository, MessageService messageService, GrpcClient grpcClient)
         {
             _customerRepository = customerRepository;
             _messageService = messageService;   
+            _grpcClient = grpcClient;
         }
 
-        [HttpGet("endpoint1")]
-        public IActionResult Endpoint1()
+        [HttpGet("grpcEndpont")]
+        public async Task<IActionResult> GrpcEndpoint()
         {
-            return Ok("ProjectB_Endpoint1");
+            HelloReply grpcResponse = await _grpcClient.GetGrpcResponse(new HelloRequest { Name = "ProjectB" });
+            return Ok(grpcResponse);
         }
 
 
@@ -30,12 +33,12 @@ namespace ProjectA.Controllers
         public IActionResult Endpoint2(string msg)
         {
             _messageService.SendMessage(msg);
-            return Ok("Messaging successiful");
+            return Ok("Messaging successful");
         }
 
 
-        [HttpPost("PostAtMySQl")]
-        public async Task<IActionResult> PostAtMySQL([FromBody] CustomerModel customer)
+        [HttpPost("PostAtMySql")]
+        public async Task<IActionResult> PostAtMySql([FromBody] CustomerModel customer)
         {
             if (customer == null)
             {
